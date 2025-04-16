@@ -1,1 +1,1 @@
-# starter
+# Starter application
