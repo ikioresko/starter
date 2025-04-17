@@ -6,6 +6,7 @@ import pureconfig.error.ConfigReaderException
 import pureconfig.generic.ProductHint
 import pureconfig.generic.semiauto.deriveReader
 import pureconfig._
+import ru.home.starter.configs.entities.Server
 
 case class AppConfig(server: Server)
 
@@ -16,7 +17,7 @@ object AppConfig {
 
   implicit private val configReader: ConfigReader[AppConfig] = deriveReader
 
-  def read[F[_]: Async]():  Resource[F, AppConfig] = Resource.eval {
+  def read[F[_]: Async](): Resource[F, AppConfig] = Resource.eval {
     Async[F].blocking {
       val configFile = System.getProperty("starter.configFile")
 

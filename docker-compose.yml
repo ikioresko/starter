@@ -1,0 +1,12 @@
+services:
+  starter:
+    image: starter:latest
+    container_name: starter
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile
+    restart: on-failure
+    ports:
+      - 9095:9090
+    volumes:
+      - ./starter.conf:/opt/starter/conf/starter.conf:ro

@@ -1,9 +1,9 @@
-package ru.home.starter.configs
+package ru.home.starter.configs.entities
 
 import com.comcast.ip4s.{Host, Port}
-import pureconfig.{CamelCase, ConfigFieldMapping, ConfigReader, SnakeCase}
 import pureconfig.generic.ProductHint
 import pureconfig.generic.semiauto.deriveReader
+import pureconfig.{CamelCase, ConfigFieldMapping, ConfigReader, SnakeCase}
 
 case class Server(host: Host, port: Port)
 
