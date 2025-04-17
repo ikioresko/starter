@@ -11,4 +11,4 @@ lazy val root = (project in file("."))
   )
   .settings(libDependencies)
 
-lazy val libDependencies = Seq(libraryDependencies ++= List(cats, catsEffect, log4cats, logback))
+lazy val libDependencies = Seq(libraryDependencies ++= http4s ++ List(cats, catsEffect, log4cats, logback))
