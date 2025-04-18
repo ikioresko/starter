@@ -12,6 +12,7 @@ ThisBuild / fork := true
 val catsV = "2.13.0"
 val catsEffectV = "3.6.1"
 val http4sV = "0.23.30"
+val tapirVersion = "1.11.25"
 
 val catsEffect = "org.typelevel" %% "cats-effect" % catsEffectV
 
@@ -22,6 +23,14 @@ val http4s = Seq(
   "org.http4s" %% "http4s-dsl" % http4sV,
   "org.http4s" %% "http4s-ember-server" % http4sV,
   "org.http4s" %% "http4s-circe" % http4sV,
+)
+
+val tapir = Seq(
+  "com.softwaremill.sttp.tapir" %% "tapir-core" % tapirVersion,
+  "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % tapirVersion,
+  "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % tapirVersion,
+  "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui-bundle" % tapirVersion,
+  "com.softwaremill.sttp.tapir" %% "tapir-cats" % tapirVersion
 )
 
 val pureConfig = "com.github.pureconfig" %% "pureconfig" % "0.17.8"
@@ -44,7 +53,7 @@ lazy val server = project
     Compile / run / mainClass := Some("ru.home.starter.App"),
     Compile / unmanagedResources ++= Seq(file("starter.conf")),
     executableScriptName := "starter",
-    libraryDependencies ++= http4s ++ Seq(
+    libraryDependencies ++= http4s ++ tapir ++ Seq(
       catsEffect, log4cats, logback, pureConfig
     )
   )
