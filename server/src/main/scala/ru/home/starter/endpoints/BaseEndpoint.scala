@@ -1,11 +1,12 @@
 package ru.home.starter.endpoints
 
+import cats.effect.Async
 import ru.home.starter.codecs.{ApplicationCodec, TapirSchema}
 import sttp.model.{Header, StatusCode}
-import sttp.tapir.json.circe.jsonBody
-import sttp.tapir.{Endpoint, endpoint, headers, oneOf, oneOfDefaultVariant, statusCode}
+import sttp.tapir.server.ServerEndpoint
+import sttp.tapir.{Endpoint, Tapir}
 
-class BaseEndpoint extends ApplicationCodec with TapirSchema {
+abstract class BaseEndpoint[F[_]: Async] extends Tapir with ApplicationCodec with TapirSchema {
   protected val openEndpoint: Endpoint[Unit, List[Header], Throwable, Unit, Any] =
     endpoint
       .in("v1")
@@ -17,4 +18,6 @@ class BaseEndpoint extends ApplicationCodec with TapirSchema {
               .and(jsonBody[Throwable]))
         )
       )
+
+  def endpoints: List[ServerEndpoint[Any, F]]
 }
