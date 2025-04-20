@@ -12,3 +12,9 @@ class AboutHandler[F[_]: Async] {
   }.attemptT
 
 }
+
+object AboutHandler {
+  def apply[F[_]: Async]: AboutHandler[F] = {
+    new AboutHandler
+  }
+}
