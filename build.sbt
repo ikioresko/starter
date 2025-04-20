@@ -12,7 +12,9 @@ ThisBuild / fork := true
 val catsV = "2.13.0"
 val catsEffectV = "3.6.1"
 val http4sV = "0.23.30"
-val tapirVersion = "1.11.25"
+val tapirV = "1.11.25"
+val sttpV = "3.11.0"
+val mockitoV = "1.17.37"
 
 val catsEffect = "org.typelevel" %% "cats-effect" % catsEffectV
 
@@ -22,21 +24,37 @@ val logback = "ch.qos.logback" % "logback-classic" % "1.5.18"
 val http4s = Seq(
   "org.http4s" %% "http4s-dsl" % http4sV,
   "org.http4s" %% "http4s-ember-server" % http4sV,
-  "org.http4s" %% "http4s-circe" % http4sV,
+  "org.http4s" %% "http4s-circe" % http4sV
 )
 
 val tapir = Seq(
-  "com.softwaremill.sttp.tapir" %% "tapir-core" % tapirVersion,
-  "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % tapirVersion,
-  "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % tapirVersion,
-  "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui-bundle" % tapirVersion,
-  "com.softwaremill.sttp.tapir" %% "tapir-cats" % tapirVersion
+  "com.softwaremill.sttp.tapir" %% "tapir-core" % tapirV,
+  "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % tapirV,
+  "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % tapirV,
+  "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui-bundle" % tapirV,
+  "com.softwaremill.sttp.tapir" %% "tapir-cats" % tapirV
 )
 
 val pureConfig = "com.github.pureconfig" %% "pureconfig" % "0.17.8"
 
-aggregateProjects(server)
+val sttp: Seq[ModuleID] = Seq(
+  "com.softwaremill.sttp.client3" %% "core" % sttpV,
+  "com.softwaremill.sttp.client3" %% "circe" % sttpV,
+  "com.softwaremill.sttp.client3" %% "fs2" % sttpV,
+  "com.softwaremill.sttp.client3" %% "slf4j-backend" % sttpV
+).map(_.excludeAll(ExclusionRule("io.netty")))
 
+val testDependencies = Seq(
+  "org.typelevel" %% "cats-effect-testing-scalatest" % "1.6.0" % Test,
+  "org.scalatest" %% "scalatest" % "3.2.19" % Test,
+  "org.mockito" %% "mockito-scala" % mockitoV % Test,
+  "org.mockito" %% "mockito-scala-cats" % mockitoV % Test,
+  "org.mockito" %% "mockito-scala-scalatest" % mockitoV % Test,
+  "com.softwaremill.sttp.tapir" %% "tapir-sttp-stub-server" % tapirV % Test,
+  "com.softwaremill.sttp.tapir" %% "tapir-testing" % tapirV % Test
+)
+
+aggregateProjects(server)
 
 lazy val root = (project in file("."))
   .settings(name := "starter")
@@ -45,16 +63,12 @@ lazy val root = (project in file("."))
 lazy val server = project
   .settings(
     addCompilerPlugin("org.typelevel" % "kind-projector_2.13.1" % "0.13.3"),
-    bashScriptExtraDefines ++= Seq(
-      """addJava "-Dstarter.configFile=starter.conf""""
-    ),
+    bashScriptExtraDefines ++= Seq("""addJava "-Dstarter.configFile=starter.conf""""),
     Universal / packageName := "starter",
     Universal / javaOptions ++= Seq("-J-Xmx2G", "-J-XX:ActiveProcessorCount=2", "-J-XX:+UseG1GC"),
     Compile / run / mainClass := Some("ru.home.starter.App"),
     Compile / unmanagedResources ++= Seq(file("starter.conf")),
     executableScriptName := "starter",
-    libraryDependencies ++= http4s ++ tapir ++ Seq(
-      catsEffect, log4cats, logback, pureConfig
-    )
+    libraryDependencies ++= http4s ++ sttp ++ tapir ++ testDependencies ++ Seq(catsEffect, log4cats, logback, pureConfig)
   )
   .enablePlugins(JavaAppPackaging)
