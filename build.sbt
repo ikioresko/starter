@@ -14,6 +14,7 @@ val catsEffectV = "3.6.1"
 val http4sV = "0.23.30"
 val tapirV = "1.11.25"
 val sttpV = "3.11.0"
+val doobieV = "1.0.0-RC9"
 val mockitoV = "1.17.37"
 
 val catsEffect = "org.typelevel" %% "cats-effect" % catsEffectV
@@ -44,6 +45,13 @@ val sttp: Seq[ModuleID] = Seq(
   "com.softwaremill.sttp.client3" %% "slf4j-backend" % sttpV
 ).map(_.excludeAll(ExclusionRule("io.netty")))
 
+val doobie = Seq(
+  "org.tpolecat" %% "doobie-core" % doobieV,
+  "org.tpolecat" %% "doobie-postgres" % doobieV,
+  "org.tpolecat" %% "doobie-hikari" % doobieV,
+  "org.tpolecat" %% "doobie-postgres-circe" % doobieV
+)
+
 val testDependencies = Seq(
   "org.typelevel" %% "cats-effect-testing-scalatest" % "1.6.0" % Test,
   "org.scalatest" %% "scalatest" % "3.2.19" % Test,
@@ -69,6 +77,11 @@ lazy val server = project
     Compile / run / mainClass := Some("ru.home.starter.App"),
     Compile / unmanagedResources ++= Seq(file("starter.conf")),
     executableScriptName := "starter",
-    libraryDependencies ++= http4s ++ sttp ++ tapir ++ testDependencies ++ Seq(catsEffect, log4cats, logback, pureConfig)
+    libraryDependencies ++= http4s ++ sttp ++ tapir ++ doobie ++ testDependencies ++ Seq(
+      catsEffect,
+      log4cats,
+      logback,
+      pureConfig
+    )
   )
   .enablePlugins(JavaAppPackaging)
