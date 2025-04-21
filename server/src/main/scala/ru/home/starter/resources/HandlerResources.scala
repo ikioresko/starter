@@ -6,10 +6,9 @@ import ru.home.starter.haldlers.AboutHandler
 case class HandlerResources[F[_]: Async](aboutHandler: AboutHandler[F])
 
 object HandlerResources {
-  def apply[F[_]: Async]: Resource[Nothing, HandlerResources[F]] = {
-    Resource.pure(
-      new HandlerResources[F](AboutHandler[F])
-      )
+
+  def apply[F[_]: Async](): Resource[F, HandlerResources[F]] = {
+    Resource.pure(new HandlerResources[F](AboutHandler[F]))
   }
 
 }

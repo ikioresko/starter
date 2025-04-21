@@ -24,9 +24,9 @@ object AppConfig {
       ConfigSource.systemProperties
         .withFallback(ConfigSource.resources(configFile))
         .load[AppConfig] match {
-        case Right(appConfig) => appConfig
-        case Left(error) => throw ConfigReaderException(error)
-      }
+          case Right(appConfig) => appConfig
+          case Left(error)      => throw ConfigReaderException(error)
+        }
     }
   }
 

@@ -21,7 +21,9 @@ class AboutEndpoint[F[_]: Async](handler: AboutHandler[F]) extends BaseEndpoint 
 }
 
 object AboutEndpoint {
+
   def apply[F[_]: Async](handler: AboutHandler[F]): AboutEndpoint[F] = {
     new AboutEndpoint(handler)
   }
+
 }

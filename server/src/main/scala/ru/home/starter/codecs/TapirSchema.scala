@@ -15,4 +15,5 @@ trait TapirSchema extends SchemaDerivation {
     ),
     name = Schema.SName("InternalServerException").some
   )
+
 }

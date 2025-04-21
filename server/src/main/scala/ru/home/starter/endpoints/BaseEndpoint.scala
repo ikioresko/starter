@@ -7,6 +7,7 @@ import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.{Endpoint, Tapir}
 
 abstract class BaseEndpoint[F[_]: Async] extends Tapir with ApplicationCodec with TapirSchema {
+
   protected val openEndpoint: Endpoint[Unit, List[Header], Throwable, Unit, Any] =
     endpoint
       .in("v1")
@@ -15,7 +16,8 @@ abstract class BaseEndpoint[F[_]: Async] extends Tapir with ApplicationCodec wit
         oneOf[Throwable](
           oneOfDefaultVariant(
             statusCode(StatusCode.InternalServerError)
-              .and(jsonBody[Throwable]))
+              .and(jsonBody[Throwable])
+          )
         )
       )
 

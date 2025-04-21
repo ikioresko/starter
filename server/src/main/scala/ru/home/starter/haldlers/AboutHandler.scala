@@ -14,7 +14,9 @@ class AboutHandler[F[_]: Async] {
 }
 
 object AboutHandler {
+
   def apply[F[_]: Async]: AboutHandler[F] = {
     new AboutHandler
   }
+
 }
