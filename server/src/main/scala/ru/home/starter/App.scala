@@ -4,6 +4,8 @@ import cats.effect._
 import org.typelevel.log4cats.LoggerFactory
 import org.typelevel.log4cats.slf4j.Slf4jFactory
 import ru.home.starter.configs.AppConfig
+import ru.home.starter.endpoints.EndpointInterpreter
+import ru.home.starter.resources.HandlerResources
 
 object App extends IOApp {
   implicit private val logging: Slf4jFactory[IO] = Slf4jFactory.create[IO]
@@ -14,7 +16,9 @@ object App extends IOApp {
       for {
         _ <- startLogInfo()
         appConfig <- AppConfig.read[IO]()
-        _ <- Server.start[IO](appConfig.server.host, appConfig.server.port)
+        handlerRes <- HandlerResources[IO]()
+        endpoints = EndpointInterpreter[IO](handlerRes)
+        _ <- Server.start[IO](appConfig.server.host, appConfig.server.port, endpoints)
       } yield {}
 
     f.useForever
