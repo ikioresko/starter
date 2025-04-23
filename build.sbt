@@ -71,7 +71,10 @@ lazy val root = (project in file("."))
 lazy val server = project
   .settings(
     addCompilerPlugin("org.typelevel" % "kind-projector_2.13.1" % "0.13.3"),
-    bashScriptExtraDefines ++= Seq("""addJava "-Dstarter.configFile=starter.conf""""),
+    bashScriptExtraDefines ++= Seq(
+      """addJava "-Dstarter.configFile=starter.conf"""",
+      s"""addJava "-Dstarter.version=${version.value}""""
+    ),
     Universal / packageName := "starter",
     Universal / javaOptions ++= Seq("-J-Xmx2G", "-J-XX:ActiveProcessorCount=2", "-J-XX:+UseG1GC"),
     Compile / run / mainClass := Some("ru.home.starter.App"),
