@@ -62,13 +62,18 @@ val testDependencies = Seq(
   "com.softwaremill.sttp.tapir" %% "tapir-testing" % tapirV % Test
 )
 
-aggregateProjects(server)
+aggregateProjects(server, core)
 
 lazy val root = (project in file("."))
   .settings(name := "starter")
   .disablePlugins(RevolverPlugin)
 
+lazy val core = (project in file("core"))
+  .settings(libraryDependencies ++= doobie ++ testDependencies ++ Seq(catsEffect, log4cats, logback))
+  .disablePlugins(RevolverPlugin)
+
 lazy val server = project
+  .dependsOn(core)
   .settings(
     addCompilerPlugin("org.typelevel" % "kind-projector_2.13.1" % "0.13.3"),
     bashScriptExtraDefines ++= Seq(
@@ -80,11 +85,6 @@ lazy val server = project
     Compile / run / mainClass := Some("ru.home.starter.App"),
     Compile / unmanagedResources ++= Seq(file("starter.conf")),
     executableScriptName := "starter",
-    libraryDependencies ++= http4s ++ sttp ++ tapir ++ doobie ++ testDependencies ++ Seq(
-      catsEffect,
-      log4cats,
-      logback,
-      pureConfig
-    )
+    libraryDependencies ++= http4s ++ sttp ++ tapir ++ testDependencies ++ Seq(catsEffect, log4cats, logback, pureConfig)
   )
   .enablePlugins(JavaAppPackaging)
