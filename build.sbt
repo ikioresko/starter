@@ -3,6 +3,16 @@ import sbt.{Compile, file}
 
 import scala.collection.Seq
 
+initialize := {
+  val _ = initialize.value
+  val minRequiredJava = 17
+  val currentJava = sys.props("java.specification.version").toInt
+  assert(
+    currentJava >= minRequiredJava,
+    s"Unsupported java version: java.specification.version=$currentJava must be >= $minRequiredJava"
+  )
+}
+
 ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / version := "1.0-SNAPSHOT"
 ThisBuild / organization := "ru.home"
@@ -36,7 +46,7 @@ val tapir = Seq(
   "com.softwaremill.sttp.tapir" %% "tapir-cats" % tapirV
 )
 
-val pureConfig = "com.github.pureconfig" %% "pureconfig" % "0.17.8"
+val pureConfig = "com.github.pureconfig" %% "pureconfig" % "0.17.9"
 
 val sttp: Seq[ModuleID] = Seq(
   "com.softwaremill.sttp.client3" %% "core" % sttpV,
