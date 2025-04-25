@@ -4,7 +4,7 @@ import cats.effect.Async
 import ru.home.starter.repositories.UserRepository
 import ru.home.starter.repositories.entity.UserInfo
 
-case class UserService[F[_]: Async](userRepo: UserRepository[F]) {
+class UserService[F[_]: Async](userRepo: UserRepository[F]) {
 
   def getUsersInfo: F[List[UserInfo]] = userRepo.getUsersInfo
 
