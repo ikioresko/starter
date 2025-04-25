@@ -5,7 +5,7 @@ import org.typelevel.log4cats.LoggerFactory
 import org.typelevel.log4cats.slf4j.Slf4jFactory
 import ru.home.starter.configs.AppConfig
 import ru.home.starter.endpoints.EndpointInterpreter
-import ru.home.starter.resources.{HandlerResources, RepositoryResources, TransactorHikari}
+import ru.home.starter.resources._
 
 object App extends IOApp {
   implicit private val logging: Slf4jFactory[IO] = Slf4jFactory.create[IO]
@@ -16,10 +16,11 @@ object App extends IOApp {
       for {
         _ <- startLogInfo()
         appConfig <- AppConfig.read[IO]()
-        handlerRes <- HandlerResources[IO]()
         transactor <- TransactorHikari[IO](appConfig)
         repositories <- RepositoryResources[IO](transactor)
-        endpoints = EndpointInterpreter[IO](handlerRes)
+        serviceResources <- ServiceResources[IO]()
+        handlerRes <- HandlerResources[IO](serviceResources)
+        endpoints <- EndpointInterpreter[IO](serviceResources, handlerRes)
         _ <- Server.start[IO](appConfig.server.host, appConfig.server.port, endpoints)
       } yield {}
 

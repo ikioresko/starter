@@ -2,7 +2,7 @@ package ru.home.starter.endpoints
 
 import cats.effect.IO
 import ru.home.starter.endpoints.api.AboutEndpoint
-import ru.home.starter.haldlers.AboutHandler
+import ru.home.starter.handlers.AboutHandler
 import sttp.tapir.testing.EndpointVerifier
 
 class EndpointShadowSpec extends EndpointSpec {

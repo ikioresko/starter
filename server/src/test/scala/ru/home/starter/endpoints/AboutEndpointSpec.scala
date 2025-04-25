@@ -4,7 +4,7 @@ import cats.data.EitherT
 import cats.effect.IO
 import io.circe.syntax.EncoderOps
 import ru.home.starter.endpoints.api.AboutEndpoint
-import ru.home.starter.haldlers.AboutHandler
+import ru.home.starter.handlers.AboutHandler
 import ru.home.starter.models.AboutResponse
 import sttp.client3._
 import sttp.model.StatusCode

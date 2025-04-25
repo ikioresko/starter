@@ -2,7 +2,7 @@ package ru.home.starter.endpoints.api
 
 import cats.effect.Async
 import ru.home.starter.endpoints.BaseEndpoint
-import ru.home.starter.haldlers.AboutHandler
+import ru.home.starter.handlers.AboutHandler
 import ru.home.starter.models.AboutResponse
 import sttp.tapir.server.ServerEndpoint
 
