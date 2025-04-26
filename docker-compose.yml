@@ -6,7 +6,29 @@ services:
       context: ./
       dockerfile: ./docker/Dockerfile
     restart: on-failure
+    depends_on:
+      - postgresql
     ports:
       - 9095:9090
     volumes:
       - ./starter.conf:/opt/starter/conf/starter.conf:ro
+  postgresql:
+    image: postgres:14.17
+    restart: unless-stopped
+    container_name: postgresql-starter
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD_FILE: "/run/secrets/database_password"
+      POSTGRES_HOST_AUTH_METHOD: "md5"
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    secrets:
+      - database_password
+
+volumes:
+  postgresql:
+secrets:
+  database_password:
+    file: ./database/database_password
