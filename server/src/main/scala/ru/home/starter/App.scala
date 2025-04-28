@@ -16,6 +16,7 @@ object App extends IOApp {
       for {
         _ <- startLogInfo()
         appConfig <- AppConfig.read[IO]()
+        _ <- FlywayMigrator.migrate[IO](appConfig.database)
         transactor <- TransactorHikari[IO](appConfig)
         repositories <- RepositoryResources[IO](transactor)
         serviceResources <- ServiceResources[IO]()

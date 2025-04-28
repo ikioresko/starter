@@ -62,6 +62,8 @@ val doobie = Seq(
   "org.tpolecat" %% "doobie-postgres-circe" % doobieV
 )
 
+val flywaydb = "org.flywaydb" % "flyway-core" % "11.8.0"
+
 val testDependencies = Seq(
   "org.typelevel" %% "cats-effect-testing-scalatest" % "1.6.0" % Test,
   "org.scalatest" %% "scalatest" % "3.2.19" % Test,
@@ -72,7 +74,7 @@ val testDependencies = Seq(
   "com.softwaremill.sttp.tapir" %% "tapir-testing" % tapirV % Test
 )
 
-aggregateProjects(server, core)
+aggregateProjects(server, core, clients)
 
 lazy val root = (project in file("."))
   .settings(name := "starter")
@@ -100,6 +102,12 @@ lazy val server = project
     Compile / run / mainClass := Some("ru.home.starter.App"),
     Compile / unmanagedResources ++= Seq(file("starter.conf")),
     executableScriptName := "starter",
-    libraryDependencies ++= http4s ++ sttp ++ tapir ++ testDependencies ++ Seq(catsEffect, log4cats, logback, pureConfig)
+    libraryDependencies ++= http4s ++ sttp ++ tapir ++ testDependencies ++ Seq(
+      catsEffect,
+      log4cats,
+      logback,
+      pureConfig,
+      flywaydb
+    )
   )
   .enablePlugins(JavaAppPackaging)
