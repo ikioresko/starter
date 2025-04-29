@@ -19,7 +19,7 @@ object App extends IOApp {
         _ <- FlywayMigrator.migrate[IO](appConfig.database)
         transactor <- TransactorHikari[IO](appConfig)
         repositories <- RepositoryResources[IO](transactor)
-        serviceResources <- ServiceResources[IO]()
+        serviceResources <- ServiceResources[IO](repositories)
         handlerRes <- HandlerResources[IO](serviceResources)
         endpoints <- EndpointInterpreter[IO](serviceResources, handlerRes)
         _ <- Server.start[IO](appConfig.server.host, appConfig.server.port, endpoints)

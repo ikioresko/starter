@@ -16,3 +16,11 @@ class UserRepository[F[_]: Sync](xa: Transactor[F]) {
   }
 
 }
+
+object UserRepository {
+
+  def apply[F[_]: Sync](xa: Transactor[F]): UserRepository[F] = {
+    new UserRepository(xa)
+  }
+
+}
