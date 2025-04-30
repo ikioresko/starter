@@ -1,0 +1,1 @@
+INSERT INTO app_users VALUES (0, 'admin');
