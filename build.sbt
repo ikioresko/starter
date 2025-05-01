@@ -82,7 +82,7 @@ lazy val root = (project in file("."))
 
 lazy val core = (project in file("core"))
   .dependsOn(clients)
-  .settings(libraryDependencies ++= doobie ++ testDependencies ++ Seq(catsEffect, log4cats, logback))
+  .settings(libraryDependencies ++= doobie ++ sttp ++ testDependencies ++ Seq(catsEffect, log4cats, logback))
   .disablePlugins(RevolverPlugin)
 
 lazy val clients = (project in file("clients"))
