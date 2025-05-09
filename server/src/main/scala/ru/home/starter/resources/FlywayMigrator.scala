@@ -11,8 +11,12 @@ object FlywayMigrator {
     val fluent = Flyway
       .configure()
       .dataSource(database.url, database.user, database.password)
+      .loggers("slf4j")
       .locations("database")
+      .baselineOnMigrate(true)
       .baselineVersion("1.0.0")
+      .validateMigrationNaming(true)
+      .failOnMissingLocations(true)
 
     fluent.load().migrate()
   }

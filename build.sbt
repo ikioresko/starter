@@ -62,7 +62,7 @@ val doobie = Seq(
   "org.tpolecat" %% "doobie-postgres-circe" % doobieV
 )
 
-val flywaydb = "org.flywaydb" % "flyway-core" % "11.8.0"
+val flywaydb = "org.flywaydb" % "flyway-core" % "9.22.3"
 
 val testDependencies = Seq(
   "org.typelevel" %% "cats-effect-testing-scalatest" % "1.6.0" % Test,
