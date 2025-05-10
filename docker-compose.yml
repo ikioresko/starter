@@ -12,6 +12,7 @@ services:
       - 9095:9090
     volumes:
       - ./starter.conf:/opt/starter/conf/starter.conf:ro
+      - ./logback.xml:/opt/starter/conf/logback.xml:ro
   postgresql:
     image: postgres:14.17
     restart: unless-stopped

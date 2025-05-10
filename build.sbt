@@ -95,6 +95,7 @@ lazy val server = project
     addCompilerPlugin("org.typelevel" % "kind-projector_2.13.1" % "0.13.3"),
     bashScriptExtraDefines ++= Seq(
       """addJava "-Dstarter.configFile=starter.conf"""",
+      """addJava "-Dlogback.configurationFile=/opt/starter/conf/logback.xml"""",
       s"""addJava "-Dstarter.version=${version.value}""""
     ),
     Universal / packageName := "starter",
