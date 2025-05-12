@@ -8,7 +8,7 @@ import ru.home.starter.services.user.UserService
 
 class UserHandler[F[_]: Async](userService: UserService[F]) {
 
-  def getAboutInfo: EitherT[F, Throwable, List[UserResponse]] = {
+  def getUsersInfo: EitherT[F, Throwable, List[UserResponse]] = {
     for {
       users <- userService.getUsersInfo
     } yield users.map(i => UserResponse(i.id, i.login, i.email))
