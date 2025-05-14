@@ -6,9 +6,9 @@ import pureconfig.error.ConfigReaderException
 import pureconfig.generic.ProductHint
 import pureconfig.generic.semiauto.deriveReader
 import pureconfig._
-import ru.home.starter.configs.entities.{Database, Server, Transactor}
+import ru.home.starter.configs.entities._
 
-case class AppConfig(server: Server, database: Database, transactor: Transactor)
+case class AppConfig(server: Server, database: Database, transactor: Transactor, worker: Worker)
 
 object AppConfig {
 
