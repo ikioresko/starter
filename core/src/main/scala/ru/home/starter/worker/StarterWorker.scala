@@ -13,7 +13,7 @@ class StarterWorker[F[_]: LoggerFactory](interval: FiniteDuration)(implicit priv
 
   def start(): Resource[F, Unit] = {
     def workWithInterval: F[Unit] = {
-      F.sleep(interval) >> L.info(s"${LocalDateTime.now()}")
+      L.info(s"StarterWorker LocalDateTime: ${LocalDateTime.now()}") >> F.sleep(interval)
     }
 
     F.background {
@@ -26,8 +26,8 @@ class StarterWorker[F[_]: LoggerFactory](interval: FiniteDuration)(implicit priv
 
 object StarterWorker {
 
-  def apply[F[_]: Async: LoggerFactory](interval: FiniteDuration): Resource[F, StarterWorker[F]] = {
-    Resource.pure(new StarterWorker(interval))
+  def apply[F[_]: Async: LoggerFactory](interval: FiniteDuration): StarterWorker[F] = {
+    new StarterWorker(interval)
   }
 
 }
