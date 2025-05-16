@@ -14,7 +14,7 @@ object EndpointInterpreter {
     handlerRes: HandlerResources[F]
   ): Resource[F, List[ServerEndpoint[Any, F]]] = Resource.eval {
     for {
-      aboutInfo <- serviceResources.aboutService.getAboutInfo
+      aboutInfo <- serviceResources.aboutService.getVersionInfo
     } yield {
 
       val endpoints = List(AboutEndpoint[F](handlerRes.aboutHandler), UserEndpoint[F](handlerRes.userHandler))

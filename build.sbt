@@ -25,6 +25,7 @@ val http4sV = "0.23.30"
 val tapirV = "1.11.25"
 val sttpV = "3.11.0"
 val doobieV = "1.0.0-RC9"
+val fs2V = "3.12.0"
 val mockitoV = "1.17.37"
 
 val catsEffect = "org.typelevel" %% "cats-effect" % catsEffectV
@@ -62,6 +63,8 @@ val doobie = Seq(
   "org.tpolecat" %% "doobie-postgres-circe" % doobieV
 )
 
+val fs2 = "co.fs2" %% "fs2-core" % fs2V
+
 val flywaydb = "org.flywaydb" % "flyway-core" % "9.22.3"
 
 val testDependencies = Seq(
@@ -82,7 +85,7 @@ lazy val root = (project in file("."))
 
 lazy val core = (project in file("core"))
   .dependsOn(clients)
-  .settings(libraryDependencies ++= doobie ++ sttp ++ testDependencies ++ Seq(catsEffect, log4cats, logback))
+  .settings(libraryDependencies ++= doobie ++ sttp ++ testDependencies ++ Seq(catsEffect, fs2, log4cats, logback))
   .disablePlugins(RevolverPlugin)
 
 lazy val clients = (project in file("clients"))

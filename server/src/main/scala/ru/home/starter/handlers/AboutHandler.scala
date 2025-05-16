@@ -9,7 +9,7 @@ import ru.home.starter.services.app.AboutService
 class AboutHandler[F[_]: Async](aboutService: AboutService[F]) {
 
   def getAboutInfo: EitherT[F, Throwable, AboutResponse] = {
-    aboutService.getAboutInfo.map(info => AboutResponse(info.version))
+    aboutService.getVersionInfo.map(info => AboutResponse(info.version))
   }.attemptT
 
 }
