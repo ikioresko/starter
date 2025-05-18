@@ -16,10 +16,11 @@ class AboutServiceSpec extends BaseSpec {
   }
 
   "getConfigInfo" should "return config" in {
-    fileManager.readFile(any[Path]).returnsF("")
+    fileManager.readFile(any[Path]).returnsF(Some(""))
 
-    new AboutService[IO](version, fileManager).getConfigInfo
-      .map(_ shouldBe "")
+    new AboutService[IO](version, fileManager)
+      .getConfigInfo(Path("/root/starter.conf"))
+      .map(_ shouldBe Some(""))
   }
 
 }

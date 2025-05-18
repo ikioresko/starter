@@ -12,8 +12,8 @@ class AboutService[F[_]: Async](version: String, fileManager: FileManager[F]) {
     VersionInfo(version).pure[F]
   }
 
-  def getConfigInfo: F[String] = {
-    fileManager.readFile(Path("/opt/starter/conf/starter.conf"))
+  def getConfigInfo(path: Path): F[Option[String]] = {
+    fileManager.readFile(path)
   }
 
 }
