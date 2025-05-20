@@ -1,6 +1,6 @@
 package ru.home.starter.services.file
 
-import cats.effect.{Async, ExitCode, IO, IOApp}
+import cats.effect.Async
 import fs2.io.file.{Files, Path}
 
 class FileManager[F[_]]()(implicit private val F: Async[F]) {

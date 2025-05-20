@@ -14,13 +14,13 @@ object EndpointInterpreter {
     handlerRes: HandlerResources[F]
   ): Resource[F, List[ServerEndpoint[Any, F]]] = Resource.eval {
     for {
-      aboutInfo <- serviceResources.aboutService.getVersionInfo
+      versionInfo <- serviceResources.aboutService.getVersionInfo
     } yield {
 
       val endpoints = List(AboutEndpoint[F](handlerRes.aboutHandler), UserEndpoint[F](handlerRes.userHandler))
         .flatMap(_.endpoints)
 
-      val swagger = SwaggerEndpoint(aboutInfo.version, endpoints).endpoints
+      val swagger = SwaggerEndpoint(versionInfo.version, endpoints).endpoints
 
       endpoints ++ swagger
     }
