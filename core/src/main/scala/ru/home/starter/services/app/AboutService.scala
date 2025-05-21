@@ -6,23 +6,22 @@ import fs2.io.file.Path
 import ru.home.starter.services.entity.VersionInfo
 import ru.home.starter.services.file.FileManager
 
-class AboutService[F[_]: Async](version: String, fileManager: FileManager[F]) {
+class AboutService[F[_]: Async](version: String, configPath: Path, fileManager: FileManager[F]) {
 
   def getVersionInfo: F[VersionInfo] = {
     VersionInfo(version).pure[F]
   }
 
-  def getConfigInfo(path: Path): F[Option[String]] = {
-    fileManager.readFile(path)
+  def getConfigInfo: F[Option[String]] = {
+    fileManager.readFile(configPath)
   }
 
 }
 
 object AboutService {
-  private val version: String = Option(System.getProperty("starter.version")).getOrElse("unknown")
 
-  def apply[F[_]: Async](fileManager: FileManager[F]): AboutService[F] = {
-    new AboutService(version, fileManager)
+  def apply[F[_]: Async](version: String, configPath: Path, fileManager: FileManager[F]): AboutService[F] = {
+    new AboutService(version, configPath, fileManager)
   }
 
 }

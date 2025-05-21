@@ -7,19 +7,19 @@ import ru.home.starter.services.entity.VersionInfo
 import ru.home.starter.services.file.FileManager
 
 class AboutServiceSpec extends BaseSpec {
-  private val fileManager = mock[FileManager[IO]]
+  private val fileManagerMock = mock[FileManager[IO]]
+  private val configPath = Path("/test")
   private val version = "1.0"
 
   "getVersionInfo" should "return version" in {
-    new AboutService[IO](version, fileManager).getVersionInfo
+    new AboutService[IO](version, configPath, fileManagerMock).getVersionInfo
       .map(_ shouldBe VersionInfo(version))
   }
 
   "getConfigInfo" should "return config" in {
-    fileManager.readFile(any[Path]).returnsF(Some(""))
+    fileManagerMock.readFile(any[Path]).returnsF(Some(""))
 
-    new AboutService[IO](version, fileManager)
-      .getConfigInfo(Path("/root/starter.conf"))
+    new AboutService[IO](version, configPath, fileManagerMock).getConfigInfo
       .map(_ shouldBe Some(""))
   }
 
