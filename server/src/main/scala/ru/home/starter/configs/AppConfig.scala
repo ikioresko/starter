@@ -8,7 +8,7 @@ import pureconfig.generic.semiauto.deriveReader
 import pureconfig._
 import ru.home.starter.configs.entities._
 
-case class AppConfig(server: Server, database: Database, transactor: Transactor, worker: Worker)
+case class AppConfig(about: About, server: Server, database: Database, transactor: Transactor, worker: Worker)
 
 object AppConfig {
 
