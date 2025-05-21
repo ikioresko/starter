@@ -20,7 +20,7 @@ object App extends IOApp {
         transactor <- TransactorHikari[IO](appConfig)
         _ <- WorkerResource[IO](appConfig).start
         repositories <- RepositoryResources[IO](transactor)
-        serviceResources <- ServiceResources[IO](repositories)
+        serviceResources <- ServiceResources[IO](repositories, appConfig)
         handlerRes <- HandlerResources[IO](serviceResources)
         endpoints <- EndpointInterpreter[IO](serviceResources, handlerRes)
         _ <- Server.start[IO](appConfig.server.host, appConfig.server.port, endpoints)
