@@ -22,8 +22,8 @@ object App extends IOApp {
         repositories <- RepositoryResources[IO](transactor)
         serviceResources <- ServiceResources[IO](repositories, appConfig)
         handlerRes <- HandlerResources[IO](serviceResources)
-        endpoints <- EndpointInterpreter[IO](serviceResources, handlerRes)
-        _ <- Server.start[IO](appConfig.server.host, appConfig.server.port, endpoints)
+        httpApp <- EndpointInterpreter[IO](serviceResources, handlerRes)
+        _ <- Server.start[IO](appConfig.server.host, appConfig.server.port, httpApp)
       } yield {}
 
     f.useForever
