@@ -22,11 +22,13 @@ ThisBuild / fork := true
 val catsV = "2.13.0"
 val catsEffectV = "3.6.1"
 val http4sV = "0.23.30"
-val tapirV = "1.11.25"
+val tapirV = "1.11.32"
 val sttpV = "3.11.0"
 val doobieV = "1.0.0-RC9"
 val fs2V = "3.12.0"
-val mockitoV = "1.17.37"
+val mockitoV = "1.17.45"
+val flywayV = "9.22.3"
+val redisV = "6.0.0"
 
 val catsEffect = "org.typelevel" %% "cats-effect" % catsEffectV
 
@@ -65,7 +67,8 @@ val doobie = Seq(
 
 val fs2 = "co.fs2" %% "fs2-core" % fs2V
 
-val flywaydb = "org.flywaydb" % "flyway-core" % "9.22.3"
+val flywaydb = "org.flywaydb" % "flyway-core" % flywayV
+val redis = "redis.clients" % "jedis" % redisV
 
 val testDependencies = Seq(
   "org.typelevel" %% "cats-effect-testing-scalatest" % "1.6.0" % Test,
@@ -85,7 +88,7 @@ lazy val root = (project in file("."))
 
 lazy val core = (project in file("core"))
   .dependsOn(clients)
-  .settings(libraryDependencies ++= doobie ++ sttp ++ testDependencies ++ Seq(catsEffect, fs2, log4cats, logback))
+  .settings(libraryDependencies ++= doobie ++ sttp ++ testDependencies ++ Seq(catsEffect, fs2, redis, log4cats, logback))
   .disablePlugins(RevolverPlugin)
 
 lazy val clients = (project in file("clients"))
