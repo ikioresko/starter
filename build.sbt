@@ -28,11 +28,11 @@ val doobieV = "1.0.0-RC9"
 val fs2V = "3.12.0"
 val mockitoV = "1.17.45"
 val flywayV = "9.22.3"
-val redisV = "6.0.0"
+val redisV = "1.7.2"
 
 val catsEffect = "org.typelevel" %% "cats-effect" % catsEffectV
 
-val log4cats = "org.typelevel" %% "log4cats-slf4j" % "2.7.0"
+val log4cats = "org.typelevel" %% "log4cats-slf4j" % "2.7.1"
 val logback = "ch.qos.logback" % "logback-classic" % "1.5.18"
 
 val http4s = Seq(
@@ -68,7 +68,13 @@ val doobie = Seq(
 val fs2 = "co.fs2" %% "fs2-core" % fs2V
 
 val flywaydb = "org.flywaydb" % "flyway-core" % flywayV
-val redis = "redis.clients" % "jedis" % redisV
+
+val redis4cats =
+  Seq(
+    "dev.profunktor" %% "redis4cats-effects" % redisV,
+    "dev.profunktor" %% "redis4cats-streams" % redisV,
+    "dev.profunktor" %% "redis4cats-log4cats" % redisV
+  )
 
 val testDependencies = Seq(
   "org.typelevel" %% "cats-effect-testing-scalatest" % "1.6.0" % Test,
@@ -88,7 +94,9 @@ lazy val root = (project in file("."))
 
 lazy val core = (project in file("core"))
   .dependsOn(clients)
-  .settings(libraryDependencies ++= doobie ++ sttp ++ testDependencies ++ Seq(catsEffect, fs2, redis, log4cats, logback))
+  .settings(
+    libraryDependencies ++= doobie ++ sttp ++ redis4cats ++ testDependencies ++ Seq(catsEffect, fs2, log4cats, logback)
+  )
   .disablePlugins(RevolverPlugin)
 
 lazy val clients = (project in file("clients"))

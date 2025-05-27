@@ -11,10 +11,13 @@ object About {
   implicit val hint: ProductHint[About] =
     ProductHint[About](ConfigFieldMapping(CamelCase, SnakeCase))
 
-  implicit val configReader: ConfigReader[About] = ConfigReader.fromCursor { _ =>
-    Right(
-      About(Option(System.getProperty("starter.version")).getOrElse("unknown"), Path("/opt/starter/conf/starter.conf"))
-    )
-  }
+  implicit val configReader: ConfigReader[About] = ConfigReader.fromCursor(
+    _.asObjectCursor
+      .flatMap { cursor =>
+        for {
+          configPath <- cursor.atKey("config_path").flatMap(_.asString)
+        } yield About(Option(System.getProperty("starter.version")).getOrElse("unknown"), Path(configPath))
+      }
+  )
 
 }
