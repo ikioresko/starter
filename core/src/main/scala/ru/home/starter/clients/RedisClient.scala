@@ -1,8 +1,7 @@
 package ru.home.starter.clients
 
 import cats.effect.{Async, Resource}
-import dev.profunktor.redis4cats.Redis
-import dev.profunktor.redis4cats.algebra.StringCommands
+import dev.profunktor.redis4cats.{Redis, RedisCommands}
 import dev.profunktor.redis4cats.connection.{RedisClient => Redis4C}
 import dev.profunktor.redis4cats.data.RedisCodec
 import dev.profunktor.redis4cats.effect.Log.Stdout._
@@ -12,7 +11,7 @@ import java.time.Duration
 
 object RedisClient {
 
-  def apply[F[_]: Async](): Resource[F, StringCommands[F, String, String]] = {
+  def apply[F[_]: Async](): Resource[F, RedisCommands[F, String, String]] = {
     val stringCodec: RedisCodec[String, String] = RedisCodec.Utf8
 
     val mkOpts: F[ClientOptions] =
